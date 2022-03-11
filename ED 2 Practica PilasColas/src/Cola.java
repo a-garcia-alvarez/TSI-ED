@@ -14,7 +14,7 @@ public class Cola {
     }
 
 
-    public void encolar(Asignatura dato) {    // Coloca el elemento dato al final de la cola
+    public void encolar(Alumno dato) {    // Coloca el elemento dato al final de la cola
         NodoCola nuevo;
         nuevo = new NodoCola (dato, null);
         if (principio != null)
@@ -24,9 +24,9 @@ public class Cola {
         numElementos++;
     }
 
-    public Asignatura desencolar() {    //Devuelve el elemento del primero de la cola y lo elimina Si la cola está vacía, devuelve como resultado 0 y un mensaje de error
+    public Alumno desencolar() {    //Devuelve el elemento del primero de la cola y lo elimina Si la cola está vacía, devuelve como resultado 0 y un mensaje de error
         NodoCola nodo;
-        Asignatura resultado = null;
+        Alumno resultado = null;
 
         if (principio == null)
             System.out.println("Error, la cola está vacía");
@@ -44,8 +44,8 @@ public class Cola {
 
 
 
-    public Asignatura getPrimero() {  //Devuelve el elemento del primero de la cola Si la cola está vacía, devuelve como resultado -999 y un mensaje de error
-        Asignatura resultado = null;
+    public Alumno getPrimero() {  //Devuelve el elemento del primero de la cola Si la cola está vacía, devuelve como resultado -999 y un mensaje de error
+        Alumno resultado = null;
         if (!this.vacia()) {
             resultado = principio.getDato();
         } else
@@ -67,13 +67,14 @@ public class Cola {
 
     public void mostrar() {     // Muestra por pantalla el contenido de la cola
         NodoCola auxiliar;
-        System.out.println("Contenido de la cola: ");
+        //System.out.println("Contenido del grupo: ");
         auxiliar = principio;
         while (auxiliar != null) {
-            System.out.print(auxiliar.getDato() + "  ");
+            //System.out.print(auxiliar.getDato() + "  ");
+            auxiliar.getDato().mostrar();
             auxiliar = auxiliar.getSiguiente();
         }
-        System.out.println("FIN");
+        //System.out.println("FIN");
     }
 
     public int getNumElementos() {       // Devuelve el número de elementos de la cola

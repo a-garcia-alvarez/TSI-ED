@@ -54,11 +54,12 @@ public class Pila {
 
     public void mostrar() {
         NodoPila auxiliar = cima;
-        System.out.println("Contenido de la pila:");
+        //System.out.println("Contenido de la pila:");
+        System.out.println("Asignaturas:");
         while (auxiliar != null) {
             auxiliar.getDato().mostrar();
             auxiliar = auxiliar.getSiguiente();
         }
-        System.out.println("FIN");
+        //System.out.println("FIN");
     }
 }

@@ -1,8 +1,8 @@
 public class NodoCola {
-    private Asignatura dato;
+    private Alumno dato;
     private NodoCola siguiente;
 
-    public NodoCola(Asignatura dato, NodoCola sig) {
+    public NodoCola(Alumno dato, NodoCola sig) {
         this.dato = dato;
         this.siguiente = sig;
     }
@@ -15,11 +15,11 @@ public class NodoCola {
         this.siguiente = siguiente;
     }
 
-    public Asignatura getDato() {
+    public Alumno getDato() {
         return dato;
     }
 
-    public void setDato(Asignatura dato) {
+    public void setDato(Alumno dato) {
         this.dato = dato;
     }
 }

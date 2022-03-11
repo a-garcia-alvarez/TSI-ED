@@ -22,6 +22,6 @@ public class Asignatura {
     }
 
     public void mostrar() {
-        System.out.printf("%s (%s)%n", nombre, calificacion);
+        System.out.printf("\t%s (%.1f)%n", nombre, calificacion);
     }
 }
