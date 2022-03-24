@@ -15,7 +15,8 @@ public class ListaCalificada {
 	/**
 	 * Inserta el alumno en la posición que le corresponde según la clave
 	 */
-	public void insertar(int clave, Alumno dato) {
+	public void insertar(Alumno dato) {
+		int clave = dato.getMatricula();
 		NodoListaCalificada anterior = null;
 		NodoListaCalificada actual = inicio;
 		while ((actual != null) && (actual.getClave() < clave)) {
@@ -24,7 +25,7 @@ public class ListaCalificada {
 		}
 		if ((actual == null) || (actual.getClave() > clave)) {
 			// Insertar antes de actual
-			NodoListaCalificada nuevo = new NodoListaCalificada(clave, dato, actual);
+			NodoListaCalificada nuevo = new NodoListaCalificada(dato, actual);
 			if (actual == inicio) {  // insertar al principio de la lista
 				inicio = nuevo;
 			} else {
@@ -88,16 +89,53 @@ public class ListaCalificada {
 		return numElementos;
 	}
 
+	private int recalcularNumElementos() {
+		NodoListaCalificada actual = inicio;
+		int num = 0;
+		while (actual!=null){
+			num++;
+			actual=actual.getSiguiente();
+		}
+		return numElementos = num;
+	}
+
 	public IteradorListaCalificada getIterador() {
 		return new IteradorListaCalificada(inicio);
 	}
 
 	public void borrarMenores(int clave) {
-
+		if (inicio == null)
+			return;
+		NodoListaCalificada actual = inicio;
+		while ((actual != null) && (actual.getClave() < clave)) {
+			actual = actual.getSiguiente();
+		}
+		if (inicio != actual){
+			inicio = actual;
+			recalcularNumElementos();
+		}
+		else
+			System.out.println("Ningun elemento con clave menor que " + clave);
 	}
 
 	public void borrarMayores(int clave) {
-
+		if (inicio == null)
+			return;
+		NodoListaCalificada actual = inicio;
+		NodoListaCalificada anterior = null;
+		while ((actual != null) && (actual.getClave() < clave)) {
+			anterior = actual;
+			actual = actual.getSiguiente();
+		}
+		if (actual != null) {
+			if (anterior == null || inicio == actual)
+				inicio = null;
+			else
+				anterior.setSiguiente(null);
+			recalcularNumElementos();
+		}
+		else
+			System.out.println("Ningun elemento con clave mayor que " + clave);
 	}
 
 }

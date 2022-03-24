@@ -17,18 +17,39 @@ public class GrupoAlumnos {
 	}
 
 	public void nuevoAlumno(Alumno alumno) {
-
+		listaAlumnos.insertar(alumno);
 	}
 
 	public int getNumAlumnos() {
-		return 0;  // Eliminar esta línea al codificar el método
+		return listaAlumnos.getNumElementos();
 	}
 
 	public Alumno getAlumno(int matricula) {
-		return null; // Eliminar esta línea al codificar el método
+		return listaAlumnos.getElemento(matricula);
 	}
 
 	public double porcentajeAprobados(String nombreAsignatura) {
-		return 0.0;  // Eliminar esta línea al codificar el método
+		if (listaAlumnos.vacia())
+			return 0.0;
+		int aprobados = 0;
+		IteradorListaCalificada it = listaAlumnos.getIterador();
+		while (it.hasNext())
+			if (it.next().estaAprobado(nombreAsignatura))
+				aprobados++;
+		return aprobados*100.0/getNumAlumnos();
+	}
+
+	public void mostrar() {
+		System.out.printf("Grupo %s.\n", nombre);
+		System.out.printf("El grupo tiene %d alumno%s\n", getNumAlumnos(), getNumAlumnos() != 1 ? "s" : "");
+		System.out.println("---------------------------------");
+		if (!listaAlumnos.vacia()) {
+			IteradorListaCalificada it = listaAlumnos.getIterador();
+			while (it.hasNext()) {
+				it.next().mostrar();
+				System.out.println("---------------------------------");
+			}
+
+		}
 	}
 }

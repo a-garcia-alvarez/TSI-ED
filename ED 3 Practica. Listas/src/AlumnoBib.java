@@ -1,13 +1,16 @@
-public class Alumno {
+import java.util.LinkedList;
+import java.util.Iterator;
+
+public class AlumnoBib {
 
 	private String nombre;
 	private int matricula;
-	private ListaOrdinal expediente;
+	private LinkedList<Evaluacion> expediente;
 
-	public Alumno(String nombre, int matricula) {
+	public AlumnoBib(String nombre, int matricula) {
 		this.nombre = nombre;
 		this.matricula = matricula;
-		expediente = new ListaOrdinal();
+		expediente = new LinkedList<Evaluacion>();
 	}
 
 	public int getMatricula() {
@@ -27,12 +30,12 @@ public class Alumno {
 	}
 
 	public void nuevaEvaluacion(Evaluacion evaluacion) {
-		expediente.insertar(evaluacion);
+		expediente.add(evaluacion);
 	}
 
 	public boolean estaAprobado(String nombreAsig) {
 		boolean aprobado = false;
-		IteradorListaOrdinal it = expediente.getIterador();
+		Iterator<Evaluacion> it = expediente.iterator();
 		while (it.hasNext() && !aprobado) {
 			Evaluacion evaluacion = it.next();
 			if (evaluacion.getNombreAsignatura().equals(nombreAsig) &&
@@ -43,44 +46,44 @@ public class Alumno {
 		return aprobado;
 	}
 
-	public ListaOrdinal asignaturasAprobadas() {
-		IteradorListaOrdinal iter = expediente.getIterador();
-		ListaOrdinal aprobadas = new ListaOrdinal();
-		while (iter.hasNext()){
-			Evaluacion aux = iter.next();
+	public LinkedList<Evaluacion> asignaturasAprobadas() {
+		Iterator<Evaluacion> it = expediente.iterator();
+		LinkedList<Evaluacion> aprobadas = new LinkedList<Evaluacion>();
+		while (it.hasNext()){
+			Evaluacion aux = it.next();
 			if (aux.getNota() >=5)
-				aprobadas.insertar(aux);
+				aprobadas.add(aux);
 		}
 		return aprobadas;
 	}
 
 	public double mediaAprobadas() {
-		ListaOrdinal aprobadas = asignaturasAprobadas();
-		if (aprobadas.vacia())
+		LinkedList<Evaluacion> aprobadas = asignaturasAprobadas();
+		if (aprobadas.isEmpty())
 			return 0.0;
-		IteradorListaOrdinal iter = aprobadas.getIterador();
+		Iterator<Evaluacion> it = aprobadas.iterator();
 		double sumatorio = 0;
-		while (iter.hasNext())
-			sumatorio += iter.next().getNota();
-		return sumatorio / aprobadas.getNumElementos();
+		while (it.hasNext())
+			sumatorio += it.next().getNota();
+		return sumatorio / aprobadas.size();
 	}
 
 	public int getNumAprobadas() {
-		ListaOrdinal aprobadas = asignaturasAprobadas();
-		return aprobadas.getNumElementos();
+		LinkedList<Evaluacion> aprobadas = asignaturasAprobadas();
+		return aprobadas.size();
 	}
 
 	public void mostrar() {
 		System.out.printf("%s. matricula: %s\n", nombre, matricula);
-		if (expediente.vacia())
+		if (expediente.isEmpty())
 			System.out.println("No ha realizado ninguna evaluación.");
 		else
 		{
-			IteradorListaOrdinal iterExpediente = expediente.getIterador();
-			while (iterExpediente.hasNext())
-				iterExpediente.next().mostrar();
+			Iterator<Evaluacion> it = expediente.iterator();
+			while (it.hasNext())
+				it.next().mostrar();
 			System.out.printf(
-					"%d evaluaciones y %d asignaturas aprobadas%s\n",expediente.getNumElementos(), getNumAprobadas(),
+					"%d evaluaciones y %d asignaturas aprobadas%s\n",expediente.size(), getNumAprobadas(),
 						getNumAprobadas()>0 ? String.format(" con calificación media %.1f", mediaAprobadas()) : ""
 					);
 		}

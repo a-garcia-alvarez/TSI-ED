@@ -10,8 +10,8 @@ public class IteradorListaOrdinal {
 		return actual != null;
 	}
 
-	public int next() {
-		int resultado = actual.getDato();
+	public Evaluacion next() {
+		Evaluacion resultado = actual.getDato();
 		actual = actual.getSiguiente();
 		return resultado;
 	}

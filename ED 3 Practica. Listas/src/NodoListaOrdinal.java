@@ -1,9 +1,9 @@
 public class NodoListaOrdinal {
 
-	private int dato;
+	private Evaluacion dato;
 	private NodoListaOrdinal siguiente;
 
-	public NodoListaOrdinal(int dato, NodoListaOrdinal siguiente) {
+	public NodoListaOrdinal(Evaluacion dato, NodoListaOrdinal siguiente) {
 		this.dato = dato;
 		this.siguiente = siguiente;
 	}
@@ -16,11 +16,9 @@ public class NodoListaOrdinal {
 		this.siguiente = siguiente;
 	}
 
-	public int getDato() {
-		return dato;
-	}
+	public Evaluacion getDato() { return dato; }
 
-	public void setDato(int dato) {
+	public void setDato(Evaluacion dato) {
 		this.dato = dato;
 	}
 }
