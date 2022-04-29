@@ -135,25 +135,106 @@ public class ArbolBinarioBusqueda {
 	// ------------------------------------------------------------------------
 	// TODO 3.2
 	public ListaOrdinalAlumnos aLista() {
-		return null;
+		ListaOrdinalAlumnos lista = new ListaOrdinalAlumnos();
+		aListaRec(raiz, lista);
+		return lista;
+	}
+	private void aListaRec(NodoArbol nodo, ListaOrdinalAlumnos lista) {
+		if (nodo == null)
+			return;
+		aListaRec(nodo.getIzquierdo(), lista);
+		lista.insertar(nodo.getDato());
+		aListaRec(nodo.getDerecho(), lista);
 	}
 
 	// ------------------------------------------------------------------------
 	// TODO 3.3
 	public Alumno getCalificacionMaxima(int minimaMat, int maximaMat) {
-		return null;
+		return getCalificacionMaximaRec(raiz, minimaMat, maximaMat);
+	}
+	private Alumno getCalificacionMaximaRec(NodoArbol nodo, int minimaMat, int maximaMat){
+		if (nodo == null)
+			return null;
+		Alumno al = nodo.getDato();
+		if (al.getMatricula()<minimaMat || al.getMatricula()>maximaMat) // fuera de los limites
+			return null;
+
+		// la unica forma de no recorrer el arbol completo es si encontramos un 10
+		// ya que no está ordenado por notas, sino matricula
+		// usemos el tipo de busqueda que sea, el alumno podría estar en "la otra punta"
+		// si esta conclusion es incorrecta, por favor haganmelo saber en los comentarios
+		if (al.getCalificacion() == 10.0)
+			return al;
+
+		Alumno izq_max, der_max;
+		double izq_cal=0.0, der_cal=0.0, cen_cal = nodo.getDato().getCalificacion();
+
+		izq_max = getCalificacionMaximaRec(nodo.getIzquierdo(), minimaMat, maximaMat);
+		if (izq_max != null)	izq_cal = izq_max.getCalificacion();
+
+		der_max = getCalificacionMaximaRec(nodo.getDerecho(), minimaMat, maximaMat);
+		if (der_max != null)	der_cal = izq_max.getCalificacion();
+
+		// en caso de igualdad de calificaciones, centro > izq > der
+		if (izq_cal > cen_cal && izq_cal >= der_cal)
+			return izq_max;
+		else if (der_cal > cen_cal && der_cal >= izq_cal)
+			return der_max;
+		else
+			return al;
 	}
 
 	// ------------------------------------------------------------------------
 	// TODO 3.4
 	public double getCalificacionMedia(int minimaMat, int maximaMat) {
+		// We're gonna do what's called a pro-gamer move
+		int[] numAl = {0};
+		double SumCal;
+		SumCal = getCalificacionMediaAux(raiz, numAl, minimaMat, maximaMat);
+		//System.out.println(numAl[0]);
+		if (numAl[0] > 0)
+			return SumCal/numAl[0];
 		return 0.0;
+	}
+	private double getCalificacionMediaAux(NodoArbol nodo, int[] numAl, int minimaMat, int maximaMat){
+		if (nodo == null)
+			return 0.0;
+		Alumno al = nodo.getDato();
+		if (al.getMatricula() < minimaMat)
+			return getCalificacionMediaAux(nodo.getDerecho(), numAl, minimaMat, maximaMat);
+		if (al.getMatricula() > maximaMat)
+			return getCalificacionMediaAux(nodo.getIzquierdo(), numAl, minimaMat, maximaMat);
+
+		numAl[0]++;
+		return al.getCalificacion()
+				+ getCalificacionMediaAux(nodo.getIzquierdo(), numAl, minimaMat, maximaMat)
+				+ getCalificacionMediaAux(nodo.getDerecho(), numAl, minimaMat, maximaMat);
 	}
 
 	// ------------------------------------------------------------------------
 	// TODO 3.5
 	public boolean esEquilibrado() {
-		return false;
+		return esEquilibradoRec(raiz);
+	}
+	private boolean esEquilibradoRec(NodoArbol nodo){
+		if (nodo == null)
+			return true;
+		int altura_izq, altura_der, diff;
+		altura_izq = getAltura(nodo.getIzquierdo());
+		altura_der = getAltura(nodo.getDerecho());
+
+		// valor absoluto de la diferencia de alturas de las subramas
+		diff = Math.abs(altura_izq - altura_der);
+
+		// devolvemos si el arbols está equilibrado o no, no ifs needed
+		return diff <= 1
+				&& esEquilibradoRec(nodo.getIzquierdo())
+				&& esEquilibradoRec(nodo.getDerecho());
+	}
+	private int getAltura(NodoArbol nodo){
+		if (nodo == null)
+			return 0;
+		return 1 + Math.max(getAltura(nodo.getIzquierdo()), getAltura(nodo.getDerecho()));
 	}
 
 }
