@@ -193,7 +193,7 @@ public class Arbol {
     }
 
     // ------------------------------------------------------------------------
-    // TODO 2.3
+    // 2.3
     public Arbol(String cadena) {
         Pila pila = new Pila();
         for ( char c:cadena.toCharArray() ) {
@@ -216,35 +216,41 @@ public class Arbol {
     }
 
     // ------------------------------------------------------------------------
-    // TODO 2.4
+    // 2.4
     public void mostrarExpresion() {
         System.out.println(mostrarExpresionRec(raiz));
     }
+    // muy posiblemente contega errores, y es mejorable, pero bueno...
+    // lo que tiene hacer los trabajos la noche anterior, lol
+    // Podría usar una implementacion mas sencilla y menos cool? por supuesto
+    // Sería divertido? Hell Nah!
     private String mostrarExpresionRec(NodoArbol arbol){
+        if (arbol == null)
+            return null;
         char c = arbol.getDato();
-        String res;
+        String res, izq, der;
+
+        izq = mostrarExpresionRec(arbol.getIzquierdo());
+        der = mostrarExpresionRec(arbol.getDerecho());
         switch (c){
-            case '+':
-                res = String.format("(%s + %s)", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
-                return res;
-            case '-':
-                res = String.format("(%s - %s)", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
-                return res;
-
             case '*':
-                res = String.format("%s * %s", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
-                return res;
             case '/':
-                res = String.format("%s / %s", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
-                return res;
+                if (izq.contains("+") || izq.contains("-"))
+                izq = String.format("(%s)", izq);
+                if (der.contains("+") || der.contains("-"))
+                    der = String.format("(%s)", der);
 
+            case '+':
+            case '-':
+                res = String.format("%s %c %s", izq, c, der );
+                return res;
             default:
                 return Character.toString(c);
         }
     }
 
     // ------------------------------------------------------------------------
-    // TODO 2.5
+    // 2.5
     public double calcularValor() {
         if (raiz != null){
             return calcularValorRec(raiz);
