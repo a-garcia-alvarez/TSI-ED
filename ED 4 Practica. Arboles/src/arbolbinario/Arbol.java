@@ -9,11 +9,11 @@ public class Arbol {
         raiz = null;
     }
 
-    public Arbol(int dato) {
+    public Arbol(char dato) {
         raiz = new NodoArbol(dato);
     }
 
-    public Arbol(int dato, Arbol izquierdo, Arbol derecho) {
+    public Arbol(char dato, Arbol izquierdo, Arbol derecho) {
         NodoArbol nodoIzq = null;
         NodoArbol nodoDer = null;
         if (izquierdo != null) {
@@ -123,11 +123,11 @@ public class Arbol {
     /**
      * Ejemplo: método que recorre el árbol para determinar si contiene un dato.
      */
-    public boolean contiene(int dato) {
+    public boolean contiene(char dato) {
         return this.contieneRec(raiz, dato);
     }
 
-    private boolean contieneRec(NodoArbol nodo, int dato) {
+    private boolean contieneRec(NodoArbol nodo, char dato) {
         // Búsqueda por preorden
         boolean resul;
         if (nodo == null) {
