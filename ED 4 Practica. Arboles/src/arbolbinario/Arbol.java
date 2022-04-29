@@ -195,17 +195,76 @@ public class Arbol {
     // ------------------------------------------------------------------------
     // TODO 2.3
     public Arbol(String cadena) {
+        Pila pila = new Pila();
+        for ( char c:cadena.toCharArray() ) {
+            if (esDigito(c)){
+                NodoArbol node = new NodoArbol(c);
+                pila.apilar(node);
+            }
+            else if (esOperador(c)){
+                NodoArbol   der = pila.desapilar(),
+                            izq = pila.desapilar();
+                NodoArbol node = new NodoArbol(c, izq, der);
+                pila.apilar(node);
+            }
+            else {
+                System.err.println("Some BS just happened ¯\\_(ツ)_/¯\n");
+                System.exit(1);
+            }
+        }
+        raiz = pila.desapilar();
     }
 
     // ------------------------------------------------------------------------
     // TODO 2.4
     public void mostrarExpresion() {
+        System.out.println(mostrarExpresionRec(raiz));
+    }
+    private String mostrarExpresionRec(NodoArbol arbol){
+        char c = arbol.getDato();
+        String res;
+        switch (c){
+            case '+':
+                res = String.format("(%s + %s)", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
+                return res;
+            case '-':
+                res = String.format("(%s - %s)", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
+                return res;
+
+            case '*':
+                res = String.format("%s * %s", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
+                return res;
+            case '/':
+                res = String.format("%s / %s", mostrarExpresionRec(arbol.getIzquierdo()), mostrarExpresionRec(arbol.getDerecho()) );
+                return res;
+
+            default:
+                return Character.toString(c);
+        }
     }
 
     // ------------------------------------------------------------------------
     // TODO 2.5
     public double calcularValor() {
+        if (raiz != null){
+            return calcularValorRec(raiz);
+        }
         return 0.0;
+    }
+    private double calcularValorRec(NodoArbol nodo){
+        char c = nodo.getDato();
+        switch (c){
+            case '+':
+                return calcularValorRec(nodo.getIzquierdo()) + calcularValorRec(nodo.getDerecho());
+            case '-':
+                return calcularValorRec(nodo.getIzquierdo()) - calcularValorRec(nodo.getDerecho());
+            case '*':
+                return calcularValorRec(nodo.getIzquierdo()) * calcularValorRec(nodo.getDerecho());
+            case '/':
+                return calcularValorRec(nodo.getIzquierdo()) / calcularValorRec(nodo.getDerecho());
+            default:
+                return Character.getNumericValue(c);
+        }
     }
 
 
