@@ -156,25 +156,42 @@ public class ArbolBinarioBusqueda {
 		if (nodo == null)
 			return null;
 		Alumno al = nodo.getDato();
-		if (al.getMatricula()<minimaMat || al.getMatricula()>maximaMat) // fuera de los limites
-			return null;
+
+		// no vale porque no exploramos el resto de caminos
+		//if (al.getMatricula()<minimaMat || al.getMatricula()>maximaMat) // fuera de los limites
+		//	return null;
 
 		// la unica forma de no recorrer el arbol completo es si encontramos un 10
 		// ya que no está ordenado por notas, sino matricula
 		// usemos el tipo de busqueda que sea, el alumno podría estar en "la otra punta"
 		// si esta conclusion es incorrecta, por favor haganmelo saber en los comentarios
-		if (al.getCalificacion() == 10.0)
+		if (al.getCalificacion() == 10.0 && al.getMatricula()>=minimaMat && al.getMatricula()<=maximaMat)
 			return al;
 
 		Alumno izq_max, der_max;
+		izq_max = der_max = null;
 		double izq_cal=0.0, der_cal=0.0, cen_cal = nodo.getDato().getCalificacion();
 
+		// Si somos mayores que el minimo, podemos buscar por la izquierda
+		if (! (al.getMatricula() < minimaMat) )
 		izq_max = getCalificacionMaximaRec(nodo.getIzquierdo(), minimaMat, maximaMat);
 		if (izq_max != null)	izq_cal = izq_max.getCalificacion();
 
+		// Si somos menores que el maximo podemos buscar por la derecha
+		if (! (al.getMatricula() > maximaMat) )
 		der_max = getCalificacionMaximaRec(nodo.getDerecho(), minimaMat, maximaMat);
-		if (der_max != null)	der_cal = izq_max.getCalificacion();
+		if (der_max != null)	der_cal = der_max.getCalificacion();
 
+		// Si no hay posibles en subramas
+		if (izq_max == null && der_max == null )
+			// y somos validos
+			if (al.getMatricula()>=minimaMat && al.getMatricula()<=maximaMat)
+				return al; //devolvernos
+			//si no
+			else
+				return null;
+
+		// si hay que hacer comapracion, se hace
 		// en caso de igualdad de calificaciones, centro > izq > der
 		if (izq_cal > cen_cal && izq_cal >= der_cal)
 			return izq_max;
